@@ -1,0 +1,22 @@
+name: Manual Environment Deploy
+
+on:
+  workflow_dispatch:
+    # 2. Add an input for the environment name
+    inputs:
+      environment:
+        description: 'Select the environment to target'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  manual-step:
+    runs-on: ubuntu-latest
+    steps:
+      # 3. Print the input value using the context
+      - name: Print Environment
+        run: echo "Deploying to environment: ${{ github.event.inputs.environment }}"
