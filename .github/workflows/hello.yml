@@ -21,7 +21,7 @@ jobs:
         run: echo "Current date and time $(date)"
 
       - name: Print the branch/tag name
-        ruun: echo "The ref name is ${{ github.ref_name }}"
+        run: echo "The ref name is ${{ github.ref_name }}"
 
       - name: List all files in the workspace
         run: |
