@@ -29,6 +29,6 @@ jobs:
           ls -R ${{ github.workspace }} # Lists files recursively from the root of the workspace
 
       - name: Print OS name (Context Expression)
-            run: echo "Operating system is ${{ runner.os }}"
+        run: echo "Operating system is ${{ runner.os }}"
 
 
