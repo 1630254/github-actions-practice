@@ -1,0 +1,16 @@
+name: PR Check
+
+# 2. Trigger on opened or updated (synchronize) against main
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      # 3. Print the branch name using the github context
+      - name: Print Branch Name
+        run: echo "PR check running for branch:${{ github.head_ref }}"
