@@ -21,7 +21,7 @@ jobs:
         run: echo "Current date and time $(date)"
 
       - name: Print the branch/tag name
-        run: echo "The ref name is ${{ github.ref_name }}"
+        ruun: echo "The ref name is ${{ github.ref_name }}"
 
       - name: List all files in the workspace
         run: |
@@ -29,4 +29,6 @@ jobs:
           ls -R ${{ github.workspace }} # Lists files recursively from the root of the workspace
 
       - name: Print OS name (Context Expression)
-        run: echo "Operating system is ${{ runner.os }}"
+            run: echo "Operating system is ${{ runner.os }}"
+
+
