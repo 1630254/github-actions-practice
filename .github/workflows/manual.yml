@@ -19,4 +19,4 @@ jobs:
     steps:
       # 3. Print the input value using the context
       - name: Print Environment
-        run: echo "Deploying to environment: ${{ github.event.inputs.environment }}"
+        run: echo "Deploying to environment ${{ github.event.inputs.environment }}"
