@@ -1,27 +1,27 @@
-name: Python Matrix Test
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
-      # 1. Define the matrix for Python versions
+      # 2. Prevent one failure from canceling other jobs
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.11", "3.12"]
+        # 1. Exclude Python 3.10 specifically on Windows
+        exclude:
+          - os: windows-latest
+            python-version: "3.10"
 
     steps:
       - uses: actions/checkout@v4
-      
-      # 2. Install the specific version from the matrix
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
+      # Triggering a failure to observe the "fail-fast: false" behavior
+      - name: Forced Failure
+        if: matrix.python-version == '3.12'
+        run: exit 1 
 
       - name: Display Python version
         run: python --version
