@@ -1,3 +1,10 @@
+name: Python Matrix Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -25,5 +32,4 @@ jobs:
 
       - name: Display Python version
         run: python --version
-
 
