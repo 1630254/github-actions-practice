@@ -1,0 +1,35 @@
+name: Multi-OS Parallel Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  linux-job:
+    name: Ubuntu Runner
+    runs-on: ubuntu-latest
+    steps:
+      - name: System Info.
+        run: |
+          echo "OS Name: ${{ runner.os }}"
+          hostname
+          whoami
+
+  windows-job:
+    name: Windows Runner
+    runs-on: windows-latest
+    steps:
+      - name: System Info.
+        shell: pwsh
+        run: |
+          echo "OS Name: ${{ runner.os }}"
+          hostname
+          whoami
+  macos-job:
+    name: macOS Runner
+    runs-on: macos-latest
+    steps:
+      - name: System Info.
+        run: |
+          echo "OS Name: ${{ runner.os }}"
+          hostname
+          whoami
