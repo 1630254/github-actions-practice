@@ -1,0 +1,24 @@
+name: Self-hosted Runner Activity
+
+on:
+  workflow_dispatch: # Corrected from 'dispatch'
+
+jobs:
+  self-hosted-job:
+    runs-on: self-hosted
+    steps:
+      - name: System and Environment Check
+        run: |
+          echo "Machine Hostname:"
+          hostname
+          echo "Current Working Directory:"
+          pwd
+          
+      - name: File Persistence Test
+        run: |
+          echo "Creating local file..."
+          echo "Created by GitHub Action on $(date)" > self_hosted_test.txt
+          ls -l self_hosted_test.txt
+          echo "File path: $(pwd)/self_hosted_test.txt"
+
+
