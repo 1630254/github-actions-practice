@@ -1,0 +1,39 @@
+name: Advanced Workflow Logic
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  # 3. This job only runs on 'push' events
+  deploy-analytics:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Main Branch Only Check
+        # 1. Runs only when the branch is main
+        if: github.ref == 'refs/heads/main'
+        run: echo "Executing production-only deployment task..."
+
+      - name: Experimental Linter
+        # 4. continue-on-error: true
+        # Even if this exits with 1, the job will keep running
+        continue-on-error: true
+        run: |
+          echo "Running a non-critical check..."
+          exit 1 
+
+      - name: Critical Build Step
+        id: build_step
+        run: |
+          echo "Starting the main build..."
+          # Change to 'exit 1' to test the failure handler below
+          exit 0
+
+      - name: Cleanup on Failure
+        # 2. Runs only if a previous step in this job failed
+        if: failure()
+        run: echo "The build failed. Cleaning up temporary resources..."
