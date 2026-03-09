@@ -1,24 +1,18 @@
-name: Self-hosted Runner Activity
+name: Targeted Self-hosted Activity
 
 on:
-  workflow_dispatch: # Corrected from 'dispatch'
+  workflow_dispatch:
 
 jobs:
-  self-hosted-job:
-    runs-on: self-hosted
+  labeled-job:
+    # This ensures the job ONLY runs on a runner that has BOTH labels
+    runs-on: [self-hosted, my-linux-runner]
+    
     steps:
-      - name: System and Environment Check
+      - name: Verify Environment
         run: |
-          echo "Machine Hostname:"
-          hostname
-          echo "Current Working Directory:"
-          pwd
-          
-      - name: File Persistence Test
-        run: |
-          echo "Creating local file..."
-          echo "Created by GitHub Action on $(date)" > self_hosted_test.txt
-          ls -l self_hosted_test.txt
-          echo "File path: $(pwd)/self_hosted_test.txt"
+          echo "Running on: $(hostname)"
+          echo "Labels matched successfully!"
+
 
 
