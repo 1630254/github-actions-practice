@@ -1,0 +1,23 @@
+name: Cross-Job Data Transfer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-date:
+    runs-on: ubuntu-latest
+    # Map the step output to a job output
+    outputs:
+      date_output: ${{ steps.get_date.outputs.today }}
+    steps:
+      - name: Set today's date
+        id: get_date
+        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+  use-date:
+    runs-on: ubuntu-latest
+    needs: generate-date
+    steps:
+      - name: Print the passed date
+        run: |
+          echo "The date received from the previous job is: ${{ needs.generate-date.outputs.date_output }}"
