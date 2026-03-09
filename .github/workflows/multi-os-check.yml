@@ -13,6 +13,12 @@ jobs:
           echo "OS Name: ${{ runner.os }}"
           hostname
           whoami
+      - name: Check Pre-installed Tool Versions
+        run: |
+          docker --version
+          python3 --version
+          node --version
+          git --version
 
   windows-job:
     name: Windows Runner
