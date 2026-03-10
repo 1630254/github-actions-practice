@@ -1,0 +1,24 @@
+name: Artifact Generation Demo
+on: [workflow_dispatch]
+
+jobs:
+  build-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Generate a Test Report
+        run: |
+          mkdir -p output
+          echo "Test Run Date: $(date)" > output/test-report.txt
+          echo "Status: Passed" >> output/test-report.txt
+          echo "Build ID: ${{ github.run_id }}" >> output/test-report.txt
+          echo "This is a dummy log file for our DevOps notes." > output/build.log
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: devops-test-results  # The name of the zip file we will download
+          path: output/              # The directory or file we want to save
+          retention-days: 5          # Optional: How long to keep the file
