@@ -1,0 +1,34 @@
+name: Multi-Job Artifact Handoff
+on: [workflow_dispatch]
+
+jobs:
+  job_1_producer:
+    name: Generate Data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create File
+        run: |
+          echo "Hello from Job 1! Generated at: $(date)" > shared-data.txt
+
+      - name: Upload for Job 2
+        uses: actions/upload-artifact@v4
+        with:
+          name: handoff-payload
+          path: shared-data.txt
+
+  job_2_consumer:
+    name: Process Data
+    runs-on: ubuntu-latest
+    needs: job_1_producer  # This ensures Job 2 waits for Job 1 to finish
+    steps:
+      - name: Download from Job 1
+        uses: actions/download-artifact@v4
+        with:
+          name: handoff-payload
+
+      - name: Use the Data
+        run: |
+          echo "Reading data received from the producer job:"
+          cat shared-data.txt
+
+
