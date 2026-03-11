@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      # This action copies your repository files (including the Dockerfile) to the runner
+      uses: actions/checkout@v4
+
+    - name: Build and push Docker image
+      # This action builds the image from your Dockerfile on the runner
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: false # Set to true to push to registry, false to build locally for testing
+        tags: telephone-book:latest
