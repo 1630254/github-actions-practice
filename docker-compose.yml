@@ -1,0 +1,48 @@
+services:
+  # 1. Our App Service
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: telephone_app
+    ports:
+      - "5000:5000"
+    # 5. Environment variables loaded from .env
+    env_file:
+      - .env
+    # Ensuring the app only starts when the DB is actually ready to take queries
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - my_net
+    restart: always
+
+  # 2. The Database Service (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    # 3. Volumes for database persistence
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # 6. Healthcheck to verify DB is ready
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my_net
+    restart: always
+
+# 4. Custom Network
+networks:
+  my_net:
+
+# Defined Volumes
+volumes:
+  pgdata:
