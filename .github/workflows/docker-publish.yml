@@ -20,10 +20,8 @@ jobs:
         password: ${{ secrets.DOCKER_TOKEN }}
 
     - name: Get short commit SHA
-      id: short-sha
-      run: |
-        SHORT_SHA="${{ github.sha::0:7 }}"
-        echo "COMMIT_SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+      id: slug
+      run: echo "short_sha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
       # This action builds the image from your Dockerfile on the runner
@@ -33,6 +31,6 @@ jobs:
         push: true
         tags: | # Set to true to push to registry, false to build locally for testing
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
-          ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ env.COMMIT_SHORT_SHA }}
+          ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ steps.slug.outputs.short_sha }}
 
 
