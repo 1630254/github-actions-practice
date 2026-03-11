@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ["self-hosted", "my-linux-runner"]
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout source code
@@ -20,3 +20,4 @@ jobs:
         context: .
         push: false # Set to true to push to registry, false to build locally for testing
         tags: telephone-book:latest
+
