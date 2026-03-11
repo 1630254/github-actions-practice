@@ -1,0 +1,10 @@
+flask
+redis
+pandas
+pandas
+numpy
+tensorflow
+torch
+
+
+
