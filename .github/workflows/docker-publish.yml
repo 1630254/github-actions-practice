@@ -30,6 +30,7 @@ jobs:
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       with:
         context: .
+        load: true
         push: ${{ github.ref == 'refs/heads/main' }}
         tags: | # Set to true to push to registry, false to build locally for testing
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
