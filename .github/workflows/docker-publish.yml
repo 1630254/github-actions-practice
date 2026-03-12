@@ -34,3 +34,11 @@ jobs:
         tags: | # Set to true to push to registry, false to build locally for testing
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ steps.slug.outputs.short_sha }}
+
+    - name: Verify image exists locally
+      run: |
+        docker images
+        # We can also check for our specific image name
+        docker image inspect ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest || echo "Image not found!"
+
+
