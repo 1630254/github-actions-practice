@@ -27,7 +27,6 @@ jobs:
     - name: Build and push Docker image
       # This action builds the image from your Dockerfile on the runner
       uses: docker/build-push-action@v6
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       with:
         context: .
         load: true
