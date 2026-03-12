@@ -41,6 +41,12 @@ jobs:
         # We can also check for our specific image name
         docker image inspect ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest || echo "Image not found!"
 
+    - name: Installing required packages
+      script: |
+         echo "Installing required packages & folders"
+         sudo apt-get update && sudo apt-get install docker.io docker-compose-v2 -y
+         sudo usermod -aG docker $USER
+         
     - name: Build and Start Containers
       run: |
         docker compose down && docker compose up -d --build --force-recreate --pull always
