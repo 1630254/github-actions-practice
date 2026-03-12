@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
 jobs:
   build:
@@ -33,3 +33,5 @@ jobs:
         tags: | # Set to true to push to registry, false to build locally for testing
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ steps.slug.outputs.short_sha }}
+
+
