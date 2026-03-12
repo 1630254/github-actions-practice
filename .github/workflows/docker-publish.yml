@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
 
     steps:
     - name: Checkout source code
@@ -27,11 +26,11 @@ jobs:
     - name: Build and push Docker image
       # This action builds the image from your Dockerfile on the runner
       uses: docker/build-push-action@v6
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       with:
         context: .
         push: true
         tags: | # Set to true to push to registry, false to build locally for testing
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ steps.slug.outputs.short_sha }}
-
 
