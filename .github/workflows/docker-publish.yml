@@ -13,6 +13,12 @@ jobs:
       # This action copies your repository files (including the Dockerfile) to the runner
       uses: actions/checkout@v4
 
+    - name: Installing required packages
+      run: |
+         echo "Installing required packages & folders"
+         sudo apt-get update && sudo apt-get install docker.io docker-compose-v2 -y
+         sudo usermod -aG docker $USER
+
     - name: Log in to Docker Hub (Optional, if pushing to a registry)
       if: github.ref == 'refs/heads/main'
       uses: docker/login-action@v3
@@ -41,12 +47,6 @@ jobs:
         # We can also check for our specific image name
         docker image inspect ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest || echo "Image not found!"
 
-    - name: Installing required packages
-      run: |
-         echo "Installing required packages & folders"
-         sudo apt-get update && sudo apt-get install docker.io docker-compose-v2 -y
-         sudo usermod -aG docker $USER
-         
     - name: Build and Start Containers
       run: |
         docker compose down && docker compose up -d --build --force-recreate --pull always
