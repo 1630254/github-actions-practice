@@ -1,9 +1,7 @@
 services:
   # 1. Our App Service
   web:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKER_USERNAME}/telephone-book:${IMAGE_TAG:-latest}
     container_name: telephone_app
     ports:
       - "5000:5000"
@@ -46,3 +44,4 @@ networks:
 # Defined Volumes
 volumes:
   pgdata:
+
