@@ -43,4 +43,4 @@ jobs:
 
       - name: Verify Secrets
         run: |
-        echo "Docker token is set: true"
+          echo "Docker token is set: true"
