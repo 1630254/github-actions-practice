@@ -42,6 +42,8 @@ jobs:
         context: .
         load: true
         push: ${{ github.ref == 'refs/heads/main' }}
+        provenance: false
+        sbom: false
         tags: | # Set to true to push to registry, false to build locally for testing
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ steps.slug.outputs.short_sha }}
@@ -50,12 +52,6 @@ jobs:
       run: |
        echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
        echo "IMAGE_TAG=${{ steps.slug.outputs.short_sha }}" >> .env
-
-    - name: Verify image exists locally
-      run: |
-        sudo docker images
-        # We can also check for our specific image name
-        sudo docker image inspect ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest || echo "Image not found!"
 
     - name: Build and Start Containers
       run: |
