@@ -42,5 +42,5 @@ jobs:
         run: echo "Building ${{ inputs.app_name }} for ${{ inputs.environment }}"
 
       - name: Verify Secrets
-        run: echo "Docker token is set: true"
-
+        run: |
+        echo "Docker token is set: true"
