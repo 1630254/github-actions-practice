@@ -46,6 +46,11 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest
           ${{ secrets.DOCKER_USERNAME }}/telephone-book:${{ steps.slug.outputs.short_sha }}
 
+    - name: Update .env file for Docker Compose
+      run: |
+       echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
+       echo "IMAGE_TAG=${{ steps.slug.outputs.short_sha }}" >> .env
+
     - name: Verify image exists locally
       run: |
         sudo docker images
