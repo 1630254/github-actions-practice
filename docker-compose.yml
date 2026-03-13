@@ -44,4 +44,3 @@ networks:
 # Defined Volumes
 volumes:
   pgdata:
-

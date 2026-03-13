@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout source code
@@ -41,4 +41,11 @@ jobs:
         # We can also check for our specific image name
         docker image inspect ${{ secrets.DOCKER_USERNAME }}/telephone-book:latest || echo "Image not found!"
 
+    - name: Build and Start Containers
+      run: |
+        docker compose down && docker compose up -d --build --force-recreate --pull always
 
+    - name: Verify Deployment
+      run: |
+        docker compose ps
+        docker ps -a
