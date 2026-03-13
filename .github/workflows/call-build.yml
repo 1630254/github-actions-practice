@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  # This job "calls" the reusable workflow we created earlier
   build:
     uses: ./.github/workflows/reusable-build.yml
     with:
@@ -15,5 +14,11 @@ jobs:
     secrets:
       docker_token: ${{ secrets.DOCKER_TOKEN }}
 
-
-
+  # 3. Add a second job that depends on the first
+  deploy_check:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Print Version from Reusable Workflow
+        run: |
+          echo "The build version received was: ${{ needs.build.outputs.build_version }}"

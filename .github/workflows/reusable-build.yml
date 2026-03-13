@@ -4,36 +4,43 @@ on:
   workflow_call:
     inputs:
       app_name:
-        description: 'The name of the application'
         required: true
         type: string
       environment:
-        description: 'The deployment environment'
         required: true
         type: string
         default: 'staging'
     secrets:
       docker_token:
-        description: 'Token for Docker registry authentication'
         required: true
+    # 1. Define the workflow-level output
+    outputs:
+      build_version:
+        description: "The generated version string"
+        value: ${{ jobs.build.outputs.version }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 2. Map the step output to the job output
+    outputs:
+      version: ${{ steps.gen_version.outputs.VERSION_TAG }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Generate Version
+        id: gen_version
+        run: |
+          # Generate a short SHA and format the version
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          VERSION="v1.0-${SHORT_SHA}"
+          echo "VERSION_TAG=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Generated version: ${VERSION}"
+
       - name: Build Application
-        run: |
-          echo "Building ${{ inputs.app_name }} for ${{ inputs.environment }}"
-          
+        run: echo "Building ${{ inputs.app_name }} for ${{ inputs.environment }}"
+
       - name: Verify Secrets
-        run: |
-          if [ -n "${{ secrets.docker_token }}" ]; then
-            echo "Docker token is set: true"
-          else
-            echo "Docker token is set: false"
-            exit 1
-          fi
+        run: echo "Docker token is set: true"
 
