@@ -9,9 +9,11 @@ jobs:
   greet-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      # 1. This step is CRITICAL for local actions
+      - name: Checkout the repository
         uses: actions/checkout@v4
 
+      # 2. Now the runner can see the .github folder
       - name: Run Custom Action
         id: my_action
         uses: ./.github/actions/setup-and-greet
@@ -20,7 +22,4 @@ jobs:
           language: "en"
 
       - name: Check Output
-        run: |
-          echo "Action finished successfully: ${{ steps.my_action.outputs.greeted }}"
-
-
+        run: echo "Action finished successfully: ${{ steps.my_action.outputs.greeted }}"
