@@ -1,0 +1,19 @@
+name: App Build & Test
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/*'
+    paths:
+      - 'src/**'
+      - 'app/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Change Detected
+        run: echo "Code in src/ or app/ changed. Starting build..."
+
+
