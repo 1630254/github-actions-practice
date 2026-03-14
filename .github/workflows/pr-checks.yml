@@ -1,0 +1,57 @@
+name: PR Quality Gates
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  file-size-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history so we can compare branches
+
+      - name: Check for files > 1MB
+        run: |
+          echo "Scanning for large files..."
+          # Find files larger than 1MB in the current workspace
+          LARGE_FILES=$(find . -type f -not -path '*/.*' -size +1M)
+          
+          if [ -n "$LARGE_FILES" ]; then
+            echo "::error::The following files exceed the 1MB limit:"
+            echo "$LARGE_FILES"
+            exit 1
+          else
+            echo "All files are within the size limit."
+          fi
+
+  branch-name-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Branch Name Pattern
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          PATTERN="^(feature/|fix/|docs/)"
+          
+          if [[ ! $BRANCH_NAME =~ $PATTERN ]]; then
+            echo "::error::Branch name '$BRANCH_NAME' is invalid."
+            echo "::error::We must use patterns: feature/*, fix/*, or docs/*"
+            exit 1
+          fi
+          echo "Branch name '$BRANCH_NAME' follows the naming convention."
+
+  pr-body-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Description
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          # Check if body is empty or just whitespace
+          if [[ -z "${PR_BODY// }" ]]; then
+            echo "::warning::The PR description is empty. We should provide context for our changes."
+          else
+            echo "PR description is present."
+          fi
