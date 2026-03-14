@@ -1,0 +1,33 @@
+name: Scheduled Health Checks
+
+on:
+  schedule:
+    # Runs every Monday at 2:30 AM UTC
+    - cron: '30 2 * * 1'
+    # Runs every 6 hours (at the start of the hour)
+    - cron: '0 */6 * * *'
+  # Adding workflow_dispatch allows us to trigger this manually for testing
+  workflow_dispatch:
+
+jobs:
+  health-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Schedule Context
+        run: |
+          echo "This run was triggered by the following cron schedule: ${{ github.event.schedule }}"
+
+      - name: Site Health Check
+        run: |
+          # Replace 'https://example.com' with our actual service URL
+          URL="https://example.com"
+          echo "Checking health for $URL..."
+          
+          RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          
+          if [ "$RESPONSE_CODE" -eq 200 ]; then
+            echo "Success: Received HTTP 200 from $URL"
+          else
+            echo "::error::Health check failed! Received HTTP $RESPONSE_CODE"
+            exit 1
+          fi
