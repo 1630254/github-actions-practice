@@ -1,0 +1,32 @@
+name: 'Setup and Greet'
+description: 'Greets the user and provides system info'
+inputs:
+  name:
+    description: 'Who to greet'
+    required: true
+  language:
+    description: 'Language for the greeting'
+    required: true
+    default: 'en'
+outputs:
+  greeted:
+    description: 'Whether the greeting was sent'
+    value: 'true'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Greet User
+      shell: bash
+      run: |
+        if [ "${{ inputs.language }}" == "en" ]; then
+          echo "Hello, ${{ inputs.name }}!"
+        else
+          echo "Greeting ${{ inputs.name }} in language: ${{ inputs.language }}"
+        fi
+
+    - name: Print System Info
+      shell: bash
+      run: |
+        echo "Current Date: $(date)"
+        echo "Runner OS: ${{ runner.os }}"
