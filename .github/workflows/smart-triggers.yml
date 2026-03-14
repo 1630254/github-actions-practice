@@ -1,19 +1,19 @@
-name: App Build & Test
+name: Global Code Quality
 
 on:
   push:
     branches:
       - main
       - 'release/*'
-    paths:
-      - 'src/**'
-      - 'app/**'
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Code Change Detected
-        run: echo "Code in src/ or app/ changed. Starting build..."
+      - name: Running Linters
+        run: echo "This run skipped the docs and focused on the code."
 
 
