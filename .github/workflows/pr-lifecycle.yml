@@ -1,0 +1,23 @@
+name: PR Lifecycle Monitor
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  pr-details:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log PR Activity Details
+        run: |
+          echo "Event action: ${{ github.event.action }}"
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          echo "PR Author: ${{ github.event.pull_request.user.login }}"
+          echo "Source Branch: ${{ github.event.pull_request.head.ref }}"
+          echo "Target Branch: ${{ github.event.pull_request.base.ref }}"
+
+      - name: Post-Merge Action
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "This PR was successfully merged into ${{ github.event.pull_request.base.ref }}."
+          echo "Performing cleanup or post-merge deployment steps..."
