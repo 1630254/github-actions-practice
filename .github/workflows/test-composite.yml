@@ -22,4 +22,5 @@ jobs:
           language: "en"
 
       - name: Check Output
-        run: echo "Action finished successfully: ${{ steps.my_action.outputs.greeted }}"
+        run: |
+          echo "Action finished successfully: ${{ steps.my_action.outputs.greeted }}"
