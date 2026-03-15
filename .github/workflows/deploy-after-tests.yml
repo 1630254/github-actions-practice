@@ -1,0 +1,31 @@
+name: Deploy After Tests
+
+on:
+  workflow_run:
+    workflows: ["Run Tests"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Only run if the triggering workflow was successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Production Deployment
+        run: |
+          echo "Tests passed! Starting deployment to production..."
+          # Add deployment commands here
+
+  handle-failure:
+    runs-on: ubuntu-latest
+    # Only run if the triggering workflow failed
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Log Failure Warning
+        run: |
+          echo "::error::The 'Run Tests' workflow failed."
+          echo "Deployment aborted to prevent breaking production."
+          exit 1
+
+
