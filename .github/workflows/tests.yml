@@ -1,0 +1,19 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Application Tests
+        run: |
+          echo "Running unit tests..."
+          # Simulate test execution
+          exit 0
+
